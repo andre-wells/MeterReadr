@@ -13,5 +13,10 @@ A [100 days of code](https://www.100daysofcode.com/) challenge to improve mastar
 
 ## 🔥 Objectives
 
-
+- Gain practice with minimal APIs in dotnet.
+- Gain basic understanding of Next.js
+- Improve mastery of React Native
+- Deploy back-end and Web app, possibly using Vercel.
+- Experdite authentication, possibly using firebase.
+- Experiment with BDD tooling
 
