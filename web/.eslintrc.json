@@ -4,7 +4,10 @@
         "es2021": true
     },
     "extends": [
+        "eslint:recommended",
         "plugin:react/recommended",
+        "plugin:prettier/recommended",
+        "eslint-config-prettier",
         "standard-with-typescript"
     ],
     "overrides": [
@@ -17,5 +20,6 @@
         "react"
     ],
     "rules": {
+        
     }
 }
