@@ -1,12 +1,11 @@
 
-### Create Vite React Application
+## Create Vite React Application
 
 ```bash
 yarn create vite
 ```
 
-
-### Add ESLint to project
+## Add ESLint to project
 
 https://dev.to/knowankit/setup-eslint-and-prettier-in-react-app-357b
 
@@ -38,13 +37,12 @@ eslint-plugin-react@latest eslint-config-standard-with-typescript@latest @typesc
 ✔ Which package manager do you want to use? · yarn
 ```
 
-
-### Update Vite to use ESLint
+## Update Vite to use ESLint
 
 Follow the instructions in [this blog](https://www.robinwieruch.de/vite-eslint/)
 
 ```bash
-yarn add vite-plugin-eslint
+yarn add vite-plugin-eslint --dev
 ```
 
 Update `vite.config.ts` with the following
@@ -60,21 +58,63 @@ export default defineConfig({
 });
 ```
 
-Now Vite knows about ESLint, but we do not have the actual ESLint dependency installed yet.
+Now Vite knows about ESLint
 
+## Add typescript-eslint
+
+Following the [documentation](https://typescript-eslint.io/getting-started)
+
+```bash
+yarn add --dev @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint typescript
 ```
-yarn add eslint eslint-config-react-app prettier eslint-plugin-prettier prettier
-```
 
-Next we need to add an ESLint config file `.eslintrc.js`
-
-- We want to use a JS file, so remove the `"type": "module"` from `package.json 
-- Create the basic `.eslintrc.js` file
+Update the `.eslintrc.cjs` file with the following
 
 ```js
 module.exports = {
-    extends: [
-        'react-app'
-    ]
-}
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  root: true,
+};
 ```
+
+But now when running `npx eslint .` we get the following error
+
+```
+ Error while loading rule '@typescript-eslint/dot-notation': You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.
+```
+
+To resolve, we need to tell ESLint where our typescript settings are.
+Add the following parserOptions in `.eslintrc.cjs`
+
+```js
+  parserOptions: {
+    tsconfigRootDir: __dirname,
+    project: ['./tsconfig.json'],
+  },
+```
+
+and include an `.eslintignore` file to prevent the `.eslintrc.cjs` file from showing errors.
+
+```js
+.eslintrc.cjs
+```
+
+Now ESLint with TypeScript should be working and we should get errors in console
+
+```bash
+ > npx eslint .
+Warning: React version not specified in eslint-plugin-react settings. See https://github.com/jsx-eslint/eslint-plugin-react#configuration .
+
+/home/andrew/100days/MeterReadr/web/src/App.tsx
+   5:1   error  Missing return type on function                                                                                                                                                        @typescript-eslint/explicit-function-return-type
+   5:13  error  Missing space before function parentheses                                                                                                                                              @typescript-eslint/space-before-function-paren
+   8:9   error  'title' is assigned a value but never used                                                                                                                                             @typescript-eslint/no-unused-vars
+   8:24  error  Extra semicolon                                                                                                                                                                        @typescript-eslint/semi
+  11:5   error  'React' must be in scope when using JSX                                                                                                                                                react/react-in-jsx-scope
+  12:7   error  'React' must be in scope when using JSX                                                                                                                                                react/react-in-jsx-scope
+```
+
+## Update ESLint and prettier settings
+
